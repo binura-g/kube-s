@@ -1,13 +1,13 @@
-kube-s
+KUBE-S
 ---
 
-A CLI tool for quickly finding specific k8s resources (by pattern matching Names) across all clusters available to kubectl.
+A lightweight CLI tool for quickly finding specific k8s resources (by pattern matching Names) across all clusters available to kubectl.
 
-### Why not use a bash script? `kube-s` is **FAST**
+### Why not use a bash script? kube-s is **FAST**!
 
-**kube-s searches through all the clusters concurrently and is much `fast`er than searching through each cluster with something like `grep`.**
+**kube-s searches through all your clusters concurrently and is much faster than searching through each cluster with something like `grep`.**
  
-In general, `kube-s` outperforms an equivalent bash script search by a few seconds. The higher the number of clusters, the more significant this difference becomes.
+In general, `kube-s` outperforms an equivalent bash script search by a few good seconds. The higher the number of clusters, the more significant this difference becomes.
  
 > You can find the scripts to run benchmarks under `./benchmark`.
 

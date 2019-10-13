@@ -12,6 +12,8 @@ import (
 )
 
 func main() {
+	log.SetFlags(0)
+
 	if len(os.Args) != 3 {
 		fmt.Println("Usage:\n\tkube-s <ResourceKind> <Pattern>\n\tEg. kube-s pods my-app")
 		os.Exit(1)
@@ -22,9 +24,8 @@ func main() {
 
 	resultsCh := make(chan string)
 	go search(kind, pattern, resultsCh)
-
 	for result := range resultsCh {
-		fmt.Println(result)
+		log.Println(result)
 	}
 	os.Exit(0)
 }
@@ -38,7 +39,6 @@ func search(kind, pattern string, resultCh chan string) {
 	fmt.Printf("Searching for all [%s] Resources with Names matching %q in %d cluster(s)...\n", kind, pattern, len(clusters))
 
 	kubectlOutputCh := make(chan []byte, len(clusters))
-
 	go func() {
 		var wg sync.WaitGroup
 		wg.Add(len(clusters))
@@ -49,7 +49,7 @@ func search(kind, pattern string, resultCh chan string) {
 				kubectlArgs := []string{"get", kind, "--all-namespaces", "--no-headers", fmt.Sprintf("--context=%s", cluster)}
 				output, err := exec.Command("kubectl", kubectlArgs...).CombinedOutput()
 				if err != nil {
-					fmt.Printf("%q %s\n", cluster, output)
+					log.Printf("Error: %q %s\n", cluster, output)
 				}
 				kubectlOutputCh <- output
 			}(cluster)
