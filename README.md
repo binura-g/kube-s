@@ -27,3 +27,10 @@ namespace-02 my-app-1
 
 ## Installation
 
+Install globally using go-get (Requires Go 1.13+)
+
+`go get github.com/BinuraG/kube-s`
+
+or Install from Release Build
+ - Download the release specific to your OS from `./release`
+ - Add the executable to your $PATH variable
