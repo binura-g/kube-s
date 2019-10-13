@@ -17,12 +17,12 @@ func listClusters() ([]string, error) {
 }
 
 func listResources(cluster, kind string) ([]byte, error) {
-	kubectlArgs := []string{
+	args := []string{
 		"get", kind,
 		"--all-namespaces",
 		"--no-headers",
 		"-o=custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name",
 		fmt.Sprintf("--context=%s", cluster),
 	}
-	return exec.Command("kubectl", kubectlArgs...).CombinedOutput()
+	return exec.Command("kubectl", args...).CombinedOutput()
 }

@@ -1,6 +1,9 @@
 KUBE-S
 ---
 
+[![license](https://img.shields.io/github/license/DAVFoundation/captain-n3m0.svg?style=flat-square)](https://github.com/BinuraG/kube-s/blob/master/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 A lightweight CLI tool for quickly finding specific k8s resources (by pattern matching Names) across all clusters available to kubectl.
 
 ### Why not use a bash script? kube-s is **FAST**!
@@ -26,6 +29,8 @@ cluster-02    namespace-01    my-app-2
 cluster-03    namespace-02    my-app-1
 ```
 
+> kube-s searches all clusters available in your kubeconfig
+
 ## Installation
 
 Install globally using go-get (Requires Go 1.13+)
@@ -35,3 +40,4 @@ Install globally using go-get (Requires Go 1.13+)
 or Install from Release Build
  - Download the release specific to your OS from `./release`
  - Add the executable to your $PATH
+
