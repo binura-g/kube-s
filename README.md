@@ -20,9 +20,9 @@ Eg.
 
 Result: 
 ```
-namespace-01 my-app-1
-namespace-01 my-app-2
-namespace-02 my-app-1
+cluster-01      namespace-01    my-app-1
+cluster-02      namespace-01    my-app-2
+cluster-03      namespace-02    my-app-1
 ```
 
 ## Installation
@@ -33,4 +33,4 @@ Install globally using go-get (Requires Go 1.13+)
 
 or Install from Release Build
  - Download the release specific to your OS from `./release`
- - Add the executable to your $PATH variable
+ - Add the executable to your $PATH
