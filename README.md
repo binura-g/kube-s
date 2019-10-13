@@ -15,14 +15,15 @@ In general, `kube-s` outperforms an equivalent bash script search by a few good 
 
 `$ kube-s <ResourceKind> <Pattern>`
 
-Eg.
+*Eg.* Search for all pods with names matching `"my-"`
+
 `$ kube-s pods my-`
 
 Result: 
 ```
-cluster-01      namespace-01    my-app-1
-cluster-02      namespace-01    my-app-2
-cluster-03      namespace-02    my-app-1
+cluster-01    namespace-01    my-app-1
+cluster-02    namespace-01    my-app-2
+cluster-03    namespace-02    my-app-1
 ```
 
 ## Installation
