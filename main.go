@@ -1,22 +1,88 @@
-/*
-Copyright © 2019 NAME HERE <EMAIL ADDRESS>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package main
 
-import "github.com/BinuraG/kube-s/cmd"
+import (
+	"bufio"
+	"bytes"
+	"fmt"
+	"log"
+	"os"
+	"os/exec"
+	"strings"
+	"sync"
+)
 
 func main() {
-	cmd.Execute()
+	if len(os.Args) != 3 {
+		fmt.Println("Usage:\n\tkube-s <ResourceKind> <Pattern>\n\tEg. kube-s pods my-app")
+		os.Exit(1)
+	}
+
+	kind := os.Args[1]
+	pattern := os.Args[2]
+
+	resultsCh := make(chan string)
+	go search(kind, pattern, resultsCh)
+
+	for result := range resultsCh {
+		fmt.Println(result)
+	}
+	os.Exit(0)
+}
+
+func search(kind, pattern string, resultCh chan string) {
+	clusters, err := listClusters()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Searching for all [%s] Resources with Names matching %q in %d cluster(s)...\n", kind, pattern, len(clusters))
+
+	kubectlOutputCh := make(chan []byte, len(clusters))
+
+	go func() {
+		var wg sync.WaitGroup
+		wg.Add(len(clusters))
+
+		for _, cluster := range clusters {
+			go func(cluster string) {
+				defer wg.Done()
+				kubectlArgs := []string{"get", kind, "--all-namespaces", "--no-headers", fmt.Sprintf("--context=%s", cluster)}
+				output, err := exec.Command("kubectl", kubectlArgs...).CombinedOutput()
+				if err != nil {
+					fmt.Printf("%q %s\n", cluster, output)
+				}
+				kubectlOutputCh <- output
+			}(cluster)
+		}
+		wg.Wait()
+		close(kubectlOutputCh)
+	}()
+
+	var resultWg sync.WaitGroup
+	for output := range kubectlOutputCh {
+		resultWg.Add(1)
+		go func(in []byte) {
+			defer resultWg.Done()
+			scanner := bufio.NewScanner(bytes.NewReader(in))
+			for scanner.Scan() {
+				s := scanner.Text()
+				if strings.Contains(s, pattern) {
+					resultCh <- s
+				}
+			}
+		}(output)
+	}
+
+	resultWg.Wait()
+	close(resultCh)
+}
+
+func listClusters() ([]string, error) {
+	output, err := exec.Command("kubectl", "config", "get-clusters").CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("%s %v", output, err)
+	}
+
+	clusters := strings.Split(strings.Trim(string(output), "\n"), "\n")[1:]
+	return clusters, nil
 }
