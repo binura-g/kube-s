@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # First argument is used as the pattern
 PATTERN=$1
