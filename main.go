@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/BinuraG/kube-s/pkg/search"
+	"github.com/binura-g/kube-s/pkg/search"
 	"log"
 	"os"
 )

@@ -1,7 +1,7 @@
 KUBE-S
 ---
 
-[![license](https://img.shields.io/github/license/DAVFoundation/captain-n3m0.svg?style=flat-square)](https://github.com/BinuraG/kube-s/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/DAVFoundation/captain-n3m0.svg?style=flat-square)](https://github.com/binura-g/kube-s/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 A lightweight CLI tool for quickly finding specific k8s resources (by pattern matching Names) across all clusters available to kubectl.
@@ -35,7 +35,7 @@ cluster-03    namespace-02    my-app-1
 
 Install globally using go-get (Requires Go 1.13+)
 
-`go get github.com/BinuraG/kube-s`
+`go get github.com/binura-g/kube-s`
 
 or Install from Release Build
  - Download the release specific to your OS from `./release`

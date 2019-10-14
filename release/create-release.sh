@@ -2,7 +2,7 @@
 
 VERSION=$1
 
-package="github.com/BinuraG/kube-s"
+package="github.com/binura-g/kube-s"
 
 package_split=(${package//\// })
 package_name=${package_split[-1]}
